@@ -1,8 +1,10 @@
+// This will start the trivia game when the Start button is clicked
 $('#start').on('click', function(){
 
   game.start();
 })
 
+// This ends the game when either you click the Finished button or you run out of time
 $(document).on('click', '#end', function(){
   game.done();
 })
@@ -62,10 +64,11 @@ var questions = [{
     correctAnswer: "Alvin And The Chipmunks"
 }];
 
+// Keeps track of the countdown function
 var game = {
     correct: 0,
     incorrect: 0,
-    counter: 90,
+    counter: 60,
     countdown: function() {
         game.counter--;
         $('#counter').html(game.counter);
@@ -74,9 +77,10 @@ var game = {
             game.done();
         }
     },
+    // This manages the display clock as well as the choices that are clicked from the trivia questionaire
     start: function() {
         timer = setInterval(game.countdown,1000);
-        $('#subwrapper').prepend('<h2>Time Remaining: <span id="counter">30</span> Seconds</h2>');
+        $('#subwrapper').prepend('<h2>Time Remaining: <span id="counter">60</span> Seconds</h2>');
           $('#start').remove();
           for (var i= 0; i < questions.length; i++) {
               $('#subwrapper').append('<h2>'+questions[i].question+'</h2');
@@ -84,9 +88,11 @@ var game = {
                   $("#subwrapper").append("<input type='radio' name='question-"+i+"' value='"+questions[i].choices[j]+"'>"+questions[i].choices[j]);
               }
           }
+          // This button submits your selected choices and ends the game
           $('#subwrapper').append('<br><br><button id="end">FINISHED</button>')
 
       },
+      // This checks to see if each question has been clicked and whether it's correct or incorrect to add to your score
     done: function() {
         $.each($("input[name='question-0']:checked"),function(){
               if($(this).val() == questions[0].correctAnswer){
@@ -170,6 +176,7 @@ var game = {
 
       this.result();
     },
+    // This clears the timer and displays your correct, incorrect, and unanswered results to the screen
     result: function(){
         clearInterval(timer);
         $('#subwrapper h2').remove();
